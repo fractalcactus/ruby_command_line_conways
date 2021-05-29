@@ -1,26 +1,28 @@
+# ALIVE_CELL_GRAPHIC = "■"
+# DEAD_CELL_GRAPHIC = " "
+ALIVE_CELL_GRAPHIC = '💩'
+DEAD_CELL_GRAPHIC = ' '
+
 # -------------------Seeds-------------------
 # a 'seed' is the starting pattern for the game
 BLINKER = [
-           [0,0,0,0,0],
-           [0,0,1,0,0],
-           [0,0,1,0,0],
-           [0,0,1,0,0],
-           [0,0,0,0,0]
+           [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,],
+           [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+           [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+           [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+           [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC]
           ]
+
 TOAD = [
-[0,0,0,0,0,0],
-[0,0,0,0,0,0],
-[0,0,1,1,1,0],
-[0,1,1,1,0,0],
-[0,0,0,0,0,0],
-[0,0,0,0,0,0]
-]
-
-STAR = [
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC,DEAD_CELL_GRAPHIC],
+  ]
 
 
-]
 
 #### 1 parameter
 # - pattern, a 2D array, representing rows and columns
@@ -67,7 +69,7 @@ def count_neighbours(row, col, pattern)
  coordinates_of_surrounding_cells.each do |coord|
   surrounding_cell_row = coord[0]
   surrounding_cell_col = coord[1]
-  if pattern[surrounding_cell_row][surrounding_cell_col] == 1
+  if pattern[surrounding_cell_row][surrounding_cell_col] == ALIVE_CELL_GRAPHIC
     neighbors +=1
   end
  end
@@ -118,17 +120,17 @@ def update_cell_value(row, col, pattern)
   # Any live cell with two or three live neighbours survives.
   # Any dead cell with three live neighbours becomes a live cell.
   # All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-  is_alive = pattern[row][col] == 1
+  is_alive = pattern[row][col] == ALIVE_CELL_GRAPHIC
   total_neighbors = count_neighbours(row, col, pattern)
   if is_alive && (total_neighbors == 2 || total_neighbors == 3)
-    return 1
+    return ALIVE_CELL_GRAPHIC
   end
 
   if !is_alive & (total_neighbors == 3)
-    return 1
+    return ALIVE_CELL_GRAPHIC
   end
 
-  return 0
+  return DEAD_CELL_GRAPHIC
 end
 
 
@@ -138,22 +140,22 @@ def run_conways(initial_pattern)
   while true do
     system("clear") || system("cls")
     print_pattern(initial_pattern)
-    sleep(1)
+    sleep(0.025)
     clicked_pattern = click(initial_pattern)
     system("clear") || system("cls")
     print_pattern(clicked_pattern)
-    sleep(1)
+    sleep(0.025)
     initial_pattern = clicked_pattern
   end
 end
 
 system("clear") || system("cls")
 puts "conways is starting"
-sleep(1)
+sleep(0.025)
 
 
 def randomize_seed
-   Array.new(50) { Array.new(50){ rand(0..1) } }
+   Array.new(100) { Array.new(100){ [DEAD_CELL_GRAPHIC,ALIVE_CELL_GRAPHIC].sample } }
 end
 
 run_conways(randomize_seed)
