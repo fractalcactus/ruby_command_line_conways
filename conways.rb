@@ -16,6 +16,12 @@ TOAD = [
 [0,0,0,0,0,0]
 ]
 
+STAR = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+
+
+]
+
 #### 1 parameter
 # - pattern, a 2D array, representing rows and columns
 ### output
@@ -145,4 +151,9 @@ system("clear") || system("cls")
 puts "conways is starting"
 sleep(1)
 
-run_conways(BLINKER)
+
+def randomize_seed
+   Array.new(50) { Array.new(50){ rand(0..1) } }
+end
+
+run_conways(randomize_seed)
