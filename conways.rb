@@ -1,80 +1,3 @@
-# require 'pry'
-# system("clear") || system("cls")
-# puts "conways is starting"
-# sleep(1)
-# system("clear") || system("cls")
-# print_pattern(BLINKER)
-# sleep(1)
-# system("clear") || system("cls")
-# print_pattern
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print "\n"
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print "\n"
-# sleep(1)
-# system("clear") || system("cls")
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print "\n"
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print "\n"
-# sleep(1)
-# system("clear") || system("cls")
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print "\n"
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print 'x'
-# print "\n"
-# sleep(1)
-# system("clear") || system("cls")
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print "\n"
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print '0'
-# print "\n"
-# sleep(1)
-# system("clear") || system("cls")
-# puts "conways ended"
-
-
-
 # -------------------Seeds-------------------
 # a 'seed' is the starting pattern for the game
 BLINKER = [
@@ -99,32 +22,11 @@ TOAD = [
 # - a 2D array, representing rows and cols, the next click of conways
 def click(pattern)
   next_pattern = Array.new(pattern.length) { Array.new(pattern.length){nil} }
-  # next_pattern =  [
-  #   ["first","first","first","first","first","first"],
-  #   ["second","second","second","second","second","second"],
-  #   ["third","third","third","third","third","third"],
-  #   ["fourth","fourth","fourth","fourth","fourth","fourth"],
-  #   ["fith","fith","fith","fith","fith","fith",],
-  #   ["sixth","sixth","sixth","sixth","sixth","sixth"]
-  #   ]
-  puts "next_pattern starts as an 2D array filled with 'hi'"
-  print_pattern(next_pattern)
-  puts ''
-  print next_pattern
-  puts ''
-  count_of_calls_to_update_cell_value = 0
   pattern.each_with_index do |row, row_index|
-    row.each_with_index do |col, col_index|
-      puts "at (row,col) (#{row_index},#{col_index}), update_cell_value returns: #{update_cell_value(row_index,col_index,pattern)}"
-      puts "next_pattern at [#{row_index}][#{col_index}] is initally #{next_pattern[row_index][col_index]}"
+    row.each_with_index do |_col, col_index|
       next_pattern[row_index][col_index] = update_cell_value(row_index,col_index,pattern)
-      puts "next_pattern at [#{row_index}][#{col_index}] is now #{next_pattern[row_index][col_index]}"
-      count_of_calls_to_update_cell_value += 1
     end
   end
-  puts "so after all that, tell me, next_pattern[3][4] == 1? answer: #{next_pattern[3][4]}"
-  puts "there were #{count_of_calls_to_update_cell_value} calls to update_cell_value"
-  print_pattern(next_pattern)
   next_pattern
 end
 
@@ -224,10 +126,23 @@ def update_cell_value(row, col, pattern)
 end
 
 
-# system("clear") || system("cls")
-# puts "conways is starting"
-# sleep(1)
-# system("clear") || system("cls")
-# print_pattern(BLINKER)
-# sleep(1)
-# system("clear") || system("cls")
+
+
+def run_conways(initial_pattern)
+  while true do
+    system("clear") || system("cls")
+    print_pattern(initial_pattern)
+    sleep(1)
+    clicked_pattern = click(initial_pattern)
+    system("clear") || system("cls")
+    print_pattern(clicked_pattern)
+    sleep(1)
+    initial_pattern = clicked_pattern
+  end
+end
+
+system("clear") || system("cls")
+puts "conways is starting"
+sleep(1)
+
+run_conways(BLINKER)
