@@ -59,16 +59,17 @@ class ConwaysGame
   def click_pattern
     @initial_pattern.each_with_index do |row, row_index|
       row.each_with_index do |_col, col_index|
-        @next_pattern[row_index][col_index] = update_cell_value(row_index, col_index)
+        @next_pattern[row_index][col_index] = get_updated_cell_value(row_index, col_index)
       end
     end
     @initial_pattern = Marshal.load(Marshal.dump(@next_pattern))
   end
 
-  def update_cell_value(row_index, col_index) # TODO: it doesn't update, it returns a value. Alter the names for other methods too
-    # Any live cell with two or three live neighbours survives.
-    # Any dead cell with three live neighbours becomes a live cell.
-    # All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+  # Conway's rules:
+  # - any live cell with two or three live neighbours survives.
+  # - any dead cell with three live neighbours becomes a live cell
+  # - all other live cells die in the next generation. Similarly, all other dead cells stay dead.
+  def get_updated_cell_value(row_index, col_index)
     is_alive = @initial_pattern[row_index][col_index] == @alive_cell_graphic
     total_neighbors = count_neighbours(row_index, col_index)
     return @alive_cell_graphic if is_alive && [2, 3].include?(total_neighbors)
