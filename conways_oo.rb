@@ -108,15 +108,15 @@ class ConwaysGame
     surrounding_cells << [row_index + 1, col_index - 1]
     surrounding_cells << [row_index + 1, col_index]
     surrounding_cells << [row_index + 1, col_index + 1]
-    # remove invalid negative indices,
+    # remove invalid negative indices
 
-    surrounding_cells.reject! do |neighbor|
-      neighbor.any?(&:negative?)
+    surrounding_cells.reject! do |cell|
+      cell.any?(&:negative?)
     end
 
     # remove coordinates outside the bounds of the pattern, if row is greater than the zero indexed rows || col is greater than the zero indexed
-    surrounding_cells.reject! do |neighbor|
-      neighbor[0] >= @pattern_row_length || neighbor[1] >= @pattern_col_length
+    surrounding_cells.reject! do |cell|
+      cell[0] >= @pattern_row_length || cell[1] >= @pattern_col_length
     end
 
     surrounding_cells
