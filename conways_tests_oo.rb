@@ -62,38 +62,38 @@ class TestConwaysOo < Test::Unit::TestCase
 
   def setup
     @conways_game_blinker = ConwaysGame.new(
-      initial_pattern_row_length: 5,
-      initial_pattern_col_length: 5,
+      pattern_row_length: 5,
+      pattern_col_length: 5,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
-      initial_pattern: :blinker
+      pattern: :blinker
     )
     @conways_game_toad = ConwaysGame.new(
-      initial_pattern_row_length: 6,
-      initial_pattern_col_length: 6,
+      pattern_row_length: 6,
+      pattern_col_length: 6,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
-      initial_pattern: :toad
+      pattern: :toad
     )
     @conways_game_star = ConwaysGame.new(
-      initial_pattern_row_length: 15,
-      initial_pattern_col_length: 15,
+      pattern_row_length: 15,
+      pattern_col_length: 15,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
-      initial_pattern: :star
+      pattern: :star
     )
     @conways_game_random = ConwaysGame.new(
-      initial_pattern_row_length: 14,
-      initial_pattern_col_length: 1,
+      pattern_row_length: 14,
+      pattern_col_length: 1,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC
     )
  end
   def test_initialization
-    assert_equal(BLINKER, @conways_game_blinker.initial_pattern)
-    assert_equal(TOAD, @conways_game_toad.initial_pattern)
-    assert_equal(STAR, @conways_game_star.initial_pattern)
-    assert_equal(14, @conways_game_random.initial_pattern_row_length)
+    assert_equal(BLINKER, @conways_game_blinker.pattern)
+    assert_equal(TOAD, @conways_game_toad.pattern)
+    assert_equal(STAR, @conways_game_star.pattern)
+    assert_equal(14, @conways_game_random.pattern_row_length)
   end
 
   # ----- Test private methods to ensure conway's algorithm runs correctly -----
@@ -190,9 +190,9 @@ class TestConwaysOo < Test::Unit::TestCase
     toad_clicked_twice = TOAD
 
     @conways_game_toad.send(:click_pattern)
-    assert_equal(toad_clicked_once, @conways_game_toad.initial_pattern)
+    assert_equal(toad_clicked_once, @conways_game_toad.pattern)
 
     @conways_game_toad.send(:click_pattern)
-    assert_equal(toad_clicked_twice, @conways_game_toad.initial_pattern)
+    assert_equal(toad_clicked_twice, @conways_game_toad.pattern)
   end
 end

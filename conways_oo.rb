@@ -3,24 +3,24 @@
 require 'pry-nav'
 
 class ConwaysGame
-  attr_accessor :initial_pattern_row_length,
-                :initial_pattern_col_length,
+  attr_accessor :pattern_row_length,
+                :pattern_col_length,
                 :dead_cell_graphic,
                 :alive_cell_graphic,
-                :initial_pattern
+                :pattern
 
   def initialize(
-    initial_pattern_row_length:,
-    initial_pattern_col_length:,
+    pattern_row_length:,
+    pattern_col_length:,
     dead_cell_graphic:,
     alive_cell_graphic:,
-    initial_pattern: randomize_seed
+    pattern: randomize_seed
   )
-    @initial_pattern_row_length = initial_pattern_row_length
-    @initial_pattern_col_length = initial_pattern_col_length
+    @pattern_row_length = pattern_row_length
+    @pattern_col_length = pattern_col_length
     @dead_cell_graphic = dead_cell_graphic
     @alive_cell_graphic = alive_cell_graphic
-    @initial_pattern = case initial_pattern
+    @pattern = case pattern
                        when :toad
                          toad_seed
                        when :blinker
@@ -28,9 +28,9 @@ class ConwaysGame
                        when :star
                          star_seed
                        else
-                         initial_pattern
+                         pattern
                        end
-    @next_pattern = Array.new(@initial_pattern_row_length) { Array.new(initial_pattern_col_length) { nil } }
+    @next_pattern = Array.new(@pattern_row_length) { Array.new(pattern_col_length) { nil } }
   end
 
   def run
@@ -48,7 +48,7 @@ class ConwaysGame
   private
 
   def print_pattern
-    @initial_pattern.each do |row|
+    @pattern.each do |row|
       row.each do |col|
         print col
       end
@@ -57,12 +57,12 @@ class ConwaysGame
   end
 
   def click_pattern
-    @initial_pattern.each_with_index do |row, row_index|
+    @pattern.each_with_index do |row, row_index|
       row.each_with_index do |_col, col_index|
         @next_pattern[row_index][col_index] = get_updated_cell_value(row_index, col_index)
       end
     end
-    @initial_pattern = Marshal.load(Marshal.dump(@next_pattern))
+    @pattern = Marshal.load(Marshal.dump(@next_pattern))
   end
 
   # Conway's rules:
@@ -70,7 +70,7 @@ class ConwaysGame
   # - any dead cell with three live neighbours becomes a live cell
   # - all other live cells die in the next generation. Similarly, all other dead cells stay dead.
   def get_updated_cell_value(row_index, col_index)
-    is_alive = @initial_pattern[row_index][col_index] == @alive_cell_graphic
+    is_alive = @pattern[row_index][col_index] == @alive_cell_graphic
     total_neighbors = count_neighbours(row_index, col_index)
     return @alive_cell_graphic if is_alive && [2, 3].include?(total_neighbors)
 
@@ -88,7 +88,7 @@ class ConwaysGame
     coordinates_of_surrounding_cells.each do |coord|
       surrounding_cell_row = coord[0]
       surrounding_cell_col = coord[1]
-      neighbors += 1 if @initial_pattern[surrounding_cell_row][surrounding_cell_col] == @alive_cell_graphic
+      neighbors += 1 if @pattern[surrounding_cell_row][surrounding_cell_col] == @alive_cell_graphic
     end
     neighbors
   end
@@ -115,7 +115,7 @@ class ConwaysGame
 
     # remove coordinates outside the bounds of the pattern, if row is greater than the zero indexed rows || col is greater than the zero indexed
     neighbors.reject! do |neighbor|
-      neighbor[0] >= @initial_pattern_row_length || neighbor[1] >= @initial_pattern_col_length
+      neighbor[0] >= @pattern_row_length || neighbor[1] >= @pattern_col_length
     end
 
     neighbors

@@ -109,16 +109,16 @@ def update_cell_value(row, col, pattern)
   DEAD_CELL_GRAPHIC
 end
 
-def run_conways(initial_pattern)
+def run_conways(pattern)
   loop do
     system('clear') || system('cls')
-    print_pattern(initial_pattern)
+    print_pattern(pattern)
     sleep(0.05)
-    clicked_pattern = click(initial_pattern)
+    clicked_pattern = click(pattern)
     system('clear') || system('cls')
     print_pattern(clicked_pattern)
     sleep(0.05)
-    initial_pattern = clicked_pattern
+    pattern = clicked_pattern
   end
 end
 
