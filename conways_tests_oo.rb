@@ -88,7 +88,8 @@ class TestConwaysOo < Test::Unit::TestCase
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC
     )
- end
+  end
+
   def test_initialization
     assert_equal(BLINKER, @conways_game_blinker.pattern)
     assert_equal(TOAD, @conways_game_toad.pattern)
@@ -174,7 +175,7 @@ class TestConwaysOo < Test::Unit::TestCase
   end
 
   def test_click
-    toad_clicked_once = [
+    toad_ticked_once = [
       [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
        DEAD_CELL_GRAPHIC],
       [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
@@ -187,12 +188,12 @@ class TestConwaysOo < Test::Unit::TestCase
        DEAD_CELL_GRAPHIC],
       [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC]
     ]
-    toad_clicked_twice = TOAD
+    toad_ticked_twice = TOAD
 
-    @conways_game_toad.send(:click_pattern)
-    assert_equal(toad_clicked_once, @conways_game_toad.pattern)
+    @conways_game_toad.send(:tick)
+    assert_equal(toad_ticked_once, @conways_game_toad.pattern)
 
-    @conways_game_toad.send(:click_pattern)
-    assert_equal(toad_clicked_twice, @conways_game_toad.pattern)
+    @conways_game_toad.send(:tick)
+    assert_equal(toad_ticked_twice, @conways_game_toad.pattern)
   end
 end

@@ -1,7 +1,20 @@
 # frozen_string_literal: true
 
-require 'pry-nav'
-
+# The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells,
+#  each of which is in one of two possible states, live or dead.
+#  Every cell interacts with its eight neighbours,
+#  which are the cells that are horizontally, vertically, or diagonally adjacent.
+#  At each step in time, the following transitions occur:
+# - Any live cell with two or three live neighbours survives.
+# - Any dead cell with three live neighbours becomes a live cell.
+# - All other live cells die in the next generation.
+# - Similarly, all other dead cells stay dead.
+# The initial pattern constitutes the "seed" of the system.
+# The first generation is created by applying the above rules simultaneously to every cell in the seed, live or dead;
+# births and deaths occur simultaneously, and the discrete moment at which this happens is a tick.
+# Each generation is a pure function of the preceding one.
+# The rules continue to be applied repeatedly to create further generations.
+# paraphrased from: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 class ConwaysGame
   attr_accessor :pattern_row_length,
                 :pattern_col_length,
@@ -21,15 +34,15 @@ class ConwaysGame
     @dead_cell_graphic = dead_cell_graphic
     @alive_cell_graphic = alive_cell_graphic
     @pattern = case pattern
-                       when :toad
-                         toad_seed
-                       when :blinker
-                         blinker_seed
-                       when :star
-                         star_seed
-                       else
-                         pattern
-                       end
+               when :toad
+                 toad_seed
+               when :blinker
+                 blinker_seed
+               when :star
+                 star_seed
+               else
+                 pattern
+               end
     @next_pattern = Array.new(@pattern_row_length) { Array.new(pattern_col_length) { nil } }
   end
 
@@ -38,7 +51,7 @@ class ConwaysGame
       system('clear') || system('cls')
       print_pattern
       sleep(0.05)
-      click_pattern
+      tick
       system('clear') || system('cls')
       print_pattern
       sleep(0.05)
@@ -56,7 +69,7 @@ class ConwaysGame
     end
   end
 
-  def click_pattern
+  def tick
     @pattern.each_with_index do |row, row_index|
       row.each_with_index do |_col, col_index|
         @next_pattern[row_index][col_index] = get_updated_cell_value(row_index, col_index)
@@ -128,6 +141,7 @@ class ConwaysGame
     Array.new(100) { Array.new(100) { [@dead_cell_graphic, @alive_cell_graphic].sample } }
   end
 
+  # rubocop:disable Layout/LineLength
   def blinker_seed
     [
       [@dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic],
@@ -191,4 +205,5 @@ class ConwaysGame
        @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic]
     ]
   end
+  # rubocop:enable Layout/LineLength
 end
