@@ -1,0 +1,198 @@
+# frozen_string_literal: true
+
+require_relative 'conways_oo'
+require 'test/unit'
+
+class TestConwaysOo < Test::Unit::TestCase
+  DEAD_CELL_GRAPHIC = ' '
+  ALIVE_CELL_GRAPHIC = 'X'
+  BLINKER = [
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC]
+  ].freeze
+
+  TOAD = [
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC]
+  ].freeze
+
+  STAR = [
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC,
+     ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC,
+     ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC],
+    [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+     DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC]
+  ].freeze
+
+  def setup
+    @conways_game_blinker = ConwaysGame.new(
+      initial_pattern_row_length: 5,
+      initial_pattern_col_length: 5,
+      dead_cell_graphic: DEAD_CELL_GRAPHIC,
+      alive_cell_graphic: ALIVE_CELL_GRAPHIC,
+      initial_pattern: :blinker
+    )
+    @conways_game_toad = ConwaysGame.new(
+      initial_pattern_row_length: 6,
+      initial_pattern_col_length: 6,
+      dead_cell_graphic: DEAD_CELL_GRAPHIC,
+      alive_cell_graphic: ALIVE_CELL_GRAPHIC,
+      initial_pattern: :toad
+    )
+    @conways_game_star = ConwaysGame.new(
+      initial_pattern_row_length: 15,
+      initial_pattern_col_length: 15,
+      dead_cell_graphic: DEAD_CELL_GRAPHIC,
+      alive_cell_graphic: ALIVE_CELL_GRAPHIC,
+      initial_pattern: :star
+    )
+    @conways_game_random = ConwaysGame.new(
+      initial_pattern_row_length: 14,
+      initial_pattern_col_length: 1,
+      dead_cell_graphic: DEAD_CELL_GRAPHIC,
+      alive_cell_graphic: ALIVE_CELL_GRAPHIC
+    )
+ end
+  def test_initialization
+    assert_equal(BLINKER, @conways_game_blinker.initial_pattern)
+    assert_equal(TOAD, @conways_game_toad.initial_pattern)
+    assert_equal(STAR, @conways_game_star.initial_pattern)
+    assert_equal(14, @conways_game_random.initial_pattern_row_length)
+  end
+
+  # ----- Test private methods to ensure conway's algorithm runs correctly -----
+  # This is necessary because the publicly exposed method ConwaysGame#run is comparatively hard to test,
+  # as it would require a testing framework that could 'see' the output on the command line
+
+  def test_count_neighbors
+    # alive cells in BLINKER
+    assert_equal(1, @conways_game_blinker.send(:count_neighbours, 1, 2))
+    assert_equal(2, @conways_game_blinker.send(:count_neighbours, 2, 2))
+    assert_equal(1, @conways_game_blinker.send(:count_neighbours, 3, 2))
+    assert_equal(3, @conways_game_blinker.send(:count_neighbours, 2, 1))
+    assert_equal(3, @conways_game_blinker.send(:count_neighbours, 2, 3))
+    # alive cells in TOAD
+    assert_equal(4, @conways_game_toad.send(:count_neighbours, 2, 2))
+    assert_equal(4, @conways_game_toad.send(:count_neighbours, 2, 3))
+    assert_equal(2, @conways_game_toad.send(:count_neighbours, 2, 4))
+    assert_equal(2, @conways_game_toad.send(:count_neighbours, 3, 1))
+    assert_equal(4, @conways_game_toad.send(:count_neighbours, 3, 2))
+    assert_equal(4, @conways_game_toad.send(:count_neighbours, 3, 3))
+    # dead cells in TOAD
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 0))
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 1))
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 2))
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 3))
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 4))
+    assert_equal(0, @conways_game_toad.send(:count_neighbours, 0, 5))
+    assert_equal(1, @conways_game_toad.send(:count_neighbours, 1, 1))
+    assert_equal(2, @conways_game_toad.send(:count_neighbours, 1, 2))
+    assert_equal(3, @conways_game_toad.send(:count_neighbours, 1, 3))
+    assert_equal(2, @conways_game_toad.send(:count_neighbours, 1, 4))
+  end
+
+  def test_update_cell_value
+    # BLINKER
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_blinker.send(:update_cell_value, 1, 2))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_blinker.send(:update_cell_value, 2, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_blinker.send(:update_cell_value, 3, 2))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_blinker.send(:update_cell_value, 2, 1))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_blinker.send(:update_cell_value, 2, 3))
+    # TOAD
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 0))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 1))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 3))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 0, 5))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 0))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 1))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 2))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 3))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 1, 5))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 0))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 1))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 3))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 2, 5))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 0))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 1))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 3))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 3, 5))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 0))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 1))
+    assert_equal(ALIVE_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 3))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 4, 5))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 0))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 1))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 2))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 3))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 4))
+    assert_equal(DEAD_CELL_GRAPHIC, @conways_game_toad.send(:update_cell_value, 5, 5))
+  end
+
+  def test_click
+    toad_clicked_once = [
+      [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+       DEAD_CELL_GRAPHIC],
+      [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+       DEAD_CELL_GRAPHIC],
+      [DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC,
+       DEAD_CELL_GRAPHIC],
+      [DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC,
+       DEAD_CELL_GRAPHIC],
+      [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, ALIVE_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC,
+       DEAD_CELL_GRAPHIC],
+      [DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC, DEAD_CELL_GRAPHIC]
+    ]
+    toad_clicked_twice = TOAD
+
+    @conways_game_toad.send(:click_pattern)
+    assert_equal(toad_clicked_once, @conways_game_toad.initial_pattern)
+
+    @conways_game_toad.send(:click_pattern)
+    assert_equal(toad_clicked_twice, @conways_game_toad.initial_pattern)
+  end
+end
