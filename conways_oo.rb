@@ -62,13 +62,14 @@ class ConwaysGame
         @next_pattern[row_index][col_index] = get_updated_cell_value(row_index, col_index)
       end
     end
-    @pattern = Marshal.load(Marshal.dump(@next_pattern))
+    @pattern = Marshal.load(Marshal.dump(@next_pattern)) # deep copy array
   end
 
   # Conway's rules:
   # - any live cell with two or three live neighbours survives.
   # - any dead cell with three live neighbours becomes a live cell
-  # - all other live cells die in the next generation. Similarly, all other dead cells stay dead.
+  # - all other live cells die in the next generation
+  # - all other dead cells stay dead
   def get_updated_cell_value(row_index, col_index)
     is_alive = @pattern[row_index][col_index] == @alive_cell_graphic
     total_neighbors = count_neighbours(row_index, col_index)
@@ -83,7 +84,7 @@ class ConwaysGame
     neighbors = 0
     coordinates_of_surrounding_cells = get_coordinates_of_surrounding_cells(row_index, col_index)
     # for each coordinate in coordinates_of_surrounding_cells,
-    # increment neighbors if pattern contains a 1 at that coordinate
+    # increment neighbors if pattern contains a @alive_cell_graphic at that coordinate
     # the coordinates are in the form [row,col]
     coordinates_of_surrounding_cells.each do |coord|
       surrounding_cell_row = coord[0]
@@ -94,31 +95,31 @@ class ConwaysGame
   end
 
   def get_coordinates_of_surrounding_cells(row_index, col_index)
-    neighbors = []
+    surrounding_cells = []
     # get the coordinates of cells that are horizontally, vertically, or diagonally adjacent
     # to the parameters row, col
     # this will include invalid negative indices
     # TODO: optimise this to not bother checking out of bound indices
-    neighbors << [row_index - 1, col_index - 1]
-    neighbors << [row_index - 1, col_index]
-    neighbors << [row_index - 1, col_index + 1]
-    neighbors << [row_index, col_index - 1]
-    neighbors << [row_index, col_index + 1]
-    neighbors << [row_index + 1, col_index - 1]
-    neighbors << [row_index + 1, col_index]
-    neighbors << [row_index + 1, col_index + 1]
+    surrounding_cells << [row_index - 1, col_index - 1]
+    surrounding_cells << [row_index - 1, col_index]
+    surrounding_cells << [row_index - 1, col_index + 1]
+    surrounding_cells << [row_index, col_index - 1]
+    surrounding_cells << [row_index, col_index + 1]
+    surrounding_cells << [row_index + 1, col_index - 1]
+    surrounding_cells << [row_index + 1, col_index]
+    surrounding_cells << [row_index + 1, col_index + 1]
     # remove invalid negative indices,
 
-    neighbors.reject! do |neighbor|
+    surrounding_cells.reject! do |neighbor|
       neighbor.any?(&:negative?)
     end
 
     # remove coordinates outside the bounds of the pattern, if row is greater than the zero indexed rows || col is greater than the zero indexed
-    neighbors.reject! do |neighbor|
+    surrounding_cells.reject! do |neighbor|
       neighbor[0] >= @pattern_row_length || neighbor[1] >= @pattern_col_length
     end
 
-    neighbors
+    surrounding_cells
   end
 
   def randomize_seed
