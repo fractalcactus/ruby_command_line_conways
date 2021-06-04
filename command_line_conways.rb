@@ -4,7 +4,7 @@
 
 # A program to play Conway's Game of Life in the command line
 # https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-class ConwaysGame
+class CommandLineConways
   attr_accessor :pattern_row_length,
                 :pattern_col_length,
                 :dead_cell_graphic,
@@ -195,7 +195,7 @@ end
 
 # examples of running the game:
 
-# @conways_game_blinker = ConwaysGame.new(
+# @conways_game_blinker = CommandLineConways.new(
 #       pattern_row_length: 5,
 #       pattern_col_length: 5,
 #       dead_cell_graphic: ' ',
@@ -204,7 +204,7 @@ end
 #     )
 # @conways_game_blinker.run
 
-# @conways_game_toad = ConwaysGame.new(
+# @conways_game_toad = CommandLineConways.new(
 #   pattern_row_length: 6,
 #   pattern_col_length: 6,
 #   dead_cell_graphic: ' ',
@@ -213,7 +213,7 @@ end
 # )
 # @conways_game_toad.run
 
-# @conways_game_star = ConwaysGame.new(
+# @conways_game_star = CommandLineConways.new(
 #   pattern_row_length: 16,
 #   pattern_col_length: 15,
 #   dead_cell_graphic: ' ',
@@ -222,7 +222,7 @@ end
 # )
 # @conways_game_star.run
 
-@conways_game_random = ConwaysGame.new(
+@conways_game_random = CommandLineConways.new(
   pattern_row_length: 150,
   pattern_col_length: 150,
   dead_cell_graphic: ' ',

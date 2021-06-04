@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'conways_command_line'
+require_relative 'command_line_conways'
 require 'test/unit'
 
 # How run these tests:
-# comment out all code outside of the ConwaysGame class at the bottom of conways_command_line.rb
+# comment out all code outside of the CommandLineConways class at the bottom of conways_command_line.rb
 # run `ruby conways_command_line_tests.rb`
-class TestConwaysCommandLine < Test::Unit::TestCase
+class TestCommandLineConways < Test::Unit::TestCase
   DEAD_CELL_GRAPHIC = ' '
   ALIVE_CELL_GRAPHIC = 'X'
   BLINKER = [
@@ -64,28 +64,28 @@ class TestConwaysCommandLine < Test::Unit::TestCase
   ].freeze
 
   def setup
-    @conways_game_blinker = ConwaysGame.new(
+    @conways_game_blinker = CommandLineConways.new(
       pattern_row_length: 5,
       pattern_col_length: 5,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
       pattern: :blinker
     )
-    @conways_game_toad = ConwaysGame.new(
+    @conways_game_toad = CommandLineConways.new(
       pattern_row_length: 6,
       pattern_col_length: 6,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
       pattern: :toad
     )
-    @conways_game_star = ConwaysGame.new(
+    @conways_game_star = CommandLineConways.new(
       pattern_row_length: 15,
       pattern_col_length: 15,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
       alive_cell_graphic: ALIVE_CELL_GRAPHIC,
       pattern: :star
     )
-    @conways_game_random = ConwaysGame.new(
+    @conways_game_random = CommandLineConways.new(
       pattern_row_length: 14,
       pattern_col_length: 1,
       dead_cell_graphic: DEAD_CELL_GRAPHIC,
@@ -101,7 +101,7 @@ class TestConwaysCommandLine < Test::Unit::TestCase
   end
 
   # ----- Test private methods to ensure conway's algorithm runs correctly -----
-  # This is necessary because the publicly exposed method ConwaysGame#run is comparatively hard to test,
+  # This is necessary because the publicly exposed method CommandLineConways#run is comparatively hard to test,
   # as it would require a testing framework that could 'see' the output on the command line
 
   def test_count_neighbors
