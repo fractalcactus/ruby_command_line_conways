@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+
 # A program to play Conway's Game of Life in the command line
 # https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 class ConwaysGame
@@ -30,7 +32,7 @@ class ConwaysGame
                else
                  pattern
                end
-    @next_pattern = Array.new(@pattern_row_length) { Array.new(pattern_col_length) { nil } }
+    @next_pattern = Array.new(@pattern_row_length) { Array.new(@pattern_col_length) { nil } }
   end
 
   def run
@@ -114,11 +116,9 @@ class ConwaysGame
       cell.any?(&:negative?)
     end
 
-    # remove coordinates outside the bounds of the pattern,
-    # if row is greater than the zero indexed rows OR
-    # col is greater than the zero indexed
+    # remove coordinates outside the bounds of the pattern
     surrounding_cells.reject! do |cell|
-      cell[0] >= @pattern_row_length || cell[1] >= @pattern_col_length
+      cell[0] >= (@pattern_row_length - 1) || cell[1] >= (@pattern_col_length - 1)
     end
 
     surrounding_cells
@@ -128,7 +128,6 @@ class ConwaysGame
     Array.new(100) { Array.new(100) { [@dead_cell_graphic, @alive_cell_graphic].sample } }
   end
 
-  # rubocop:disable Layout/LineLength
   def blinker_seed
     [
       [@dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic],
@@ -192,5 +191,41 @@ class ConwaysGame
        @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic, @dead_cell_graphic]
     ]
   end
-  # rubocop:enable Layout/LineLength
 end
+
+# examples of running the game:
+
+# @conways_game_blinker = ConwaysGame.new(
+#       pattern_row_length: 5,
+#       pattern_col_length: 5,
+#       dead_cell_graphic: ' ',
+#       alive_cell_graphic: 'X',
+#       pattern: :blinker
+#     )
+# @conways_game_blinker.run
+
+# @conways_game_toad = ConwaysGame.new(
+#   pattern_row_length: 6,
+#   pattern_col_length: 6,
+#   dead_cell_graphic: ' ',
+#   alive_cell_graphic: '𓆏 ',
+#   pattern: :toad
+# )
+# @conways_game_toad.run
+
+# @conways_game_star = ConwaysGame.new(
+#   pattern_row_length: 16,
+#   pattern_col_length: 15,
+#   dead_cell_graphic: ' ',
+#   alive_cell_graphic: '𓆦',
+#   pattern: :star
+# )
+# @conways_game_star.run
+
+@conways_game_random = ConwaysGame.new(
+  pattern_row_length: 100,
+  pattern_col_length: 100,
+  dead_cell_graphic: ' ',
+  alive_cell_graphic: '𓆦',
+)
+@conways_game_random.run

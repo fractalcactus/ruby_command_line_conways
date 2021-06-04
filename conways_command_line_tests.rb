@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'conways_oo'
+require_relative 'conways_command_line'
 require 'test/unit'
 
-class TestConwaysOo < Test::Unit::TestCase
+# How run these tests:
+# comment out all code outside of the ConwaysGame class at the bottom of conways_command_line.rb
+# run `ruby conways_command_line_tests.rb`
+class TestConwaysCommandLine < Test::Unit::TestCase
   DEAD_CELL_GRAPHIC = ' '
   ALIVE_CELL_GRAPHIC = 'X'
   BLINKER = [
