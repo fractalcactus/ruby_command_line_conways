@@ -1,20 +1,7 @@
 # frozen_string_literal: true
 
-# The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells,
-#  each of which is in one of two possible states, live or dead.
-#  Every cell interacts with its eight neighbours,
-#  which are the cells that are horizontally, vertically, or diagonally adjacent.
-#  At each step in time, the following transitions occur:
-# - Any live cell with two or three live neighbours survives.
-# - Any dead cell with three live neighbours becomes a live cell.
-# - All other live cells die in the next generation.
-# - Similarly, all other dead cells stay dead.
-# The initial pattern constitutes the "seed" of the system.
-# The first generation is created by applying the above rules simultaneously to every cell in the seed, live or dead;
-# births and deaths occur simultaneously, and the discrete moment at which this happens is a tick.
-# Each generation is a pure function of the preceding one.
-# The rules continue to be applied repeatedly to create further generations.
-# paraphrased from: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+# A program to play Conway's Game of Life in the command line
+# https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 class ConwaysGame
   attr_accessor :pattern_row_length,
                 :pattern_col_length,
