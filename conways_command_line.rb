@@ -16,7 +16,7 @@ class ConwaysGame
     pattern_col_length:,
     dead_cell_graphic:,
     alive_cell_graphic:,
-    pattern: randomize_seed
+    pattern: :random
   )
     @pattern_row_length = pattern_row_length
     @pattern_col_length = pattern_col_length
@@ -30,7 +30,7 @@ class ConwaysGame
                when :star
                  star_seed
                else
-                 pattern
+                 randomize_seed
                end
     @next_pattern = Array.new(@pattern_row_length) { Array.new(@pattern_col_length) { nil } }
   end
@@ -125,7 +125,7 @@ class ConwaysGame
   end
 
   def randomize_seed
-    Array.new(100) { Array.new(100) { [@dead_cell_graphic, @alive_cell_graphic].sample } }
+    Array.new(@pattern_row_length) { Array.new(@pattern_col_length) { [@dead_cell_graphic, @alive_cell_graphic].sample } }
   end
 
   def blinker_seed
@@ -217,14 +217,14 @@ end
 #   pattern_row_length: 16,
 #   pattern_col_length: 15,
 #   dead_cell_graphic: ' ',
-#   alive_cell_graphic: '𓆦',
+#   alive_cell_graphic: '𓇬',
 #   pattern: :star
 # )
 # @conways_game_star.run
 
 @conways_game_random = ConwaysGame.new(
-  pattern_row_length: 100,
-  pattern_col_length: 100,
+  pattern_row_length: 150,
+  pattern_col_length: 150,
   dead_cell_graphic: ' ',
   alive_cell_graphic: '𓆦',
 )
