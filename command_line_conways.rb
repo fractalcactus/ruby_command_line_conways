@@ -74,6 +74,7 @@ class CommandLineConways
   # - any dead cell with three live neighbours becomes a live cell
   # - all other live cells die in the next generation
   # - all other dead cells stay dead
+  # return either @alive_cell_graphic or @dead_cell_graphic
   def get_updated_cell_value(row_index, col_index)
     is_alive = @pattern[row_index][col_index] == @alive_cell_graphic
     total_neighbors = count_neighbours(row_index, col_index)
@@ -87,6 +88,7 @@ class CommandLineConways
   # for each coordinate in coordinates_of_surrounding_cells,
   # increment neighbors if pattern contains a @alive_cell_graphic at that coordinate
   # the coordinates are in the form [row,col]
+  # return an integer >= 0
   def count_neighbours(row_index, col_index)
     neighbors = 0
     coordinates_of_surrounding_cells = get_coordinates_of_surrounding_cells(row_index, col_index)
@@ -99,28 +101,44 @@ class CommandLineConways
   end
 
   # get the coordinates of cells that are horizontally, vertically, or diagonally adjacent
-  # to the parameters row, col
-  # don't check out of bound (row, col) indices
+  # to the parameters (row_index, col_index)
+  # don't check out of bound indices
+  # return a 2D array of coordinates in the form [[row, col], [row, col] ... [row, col]]
   def get_coordinates_of_surrounding_cells(row_index, col_index)
     surrounding_cells = []
 
     # one row up, one col left
-    surrounding_cells << [row_index - 1, col_index - 1] unless top_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
+    unless top_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index - 1, col_index - 1]
+    end
     # one row up, same col
-    surrounding_cells << [row_index - 1, col_index] unless top_edge_of_pattern?(row_index)
+    unless top_edge_of_pattern?(row_index)
+      surrounding_cells << [row_index - 1, col_index]
+    end
     # one row up, one col right
-    surrounding_cells << [row_index - 1, col_index + 1] unless top_edge_of_pattern?(row_index) || right_edge_of_pattern?(col_index)
+    unless top_edge_of_pattern?(row_index) || right_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index - 1, col_index + 1]
+    end
     # same row, one col left
-    surrounding_cells << [row_index, col_index - 1] unless left_edge_of_pattern?(col_index)
+    unless left_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index, col_index - 1]
+    end
     # same row, one col right
-    surrounding_cells << [row_index, col_index + 1] unless right_edge_of_pattern?(col_index)
+    unless right_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index, col_index + 1]
+    end
     # one row down, one col left
-    surrounding_cells << [row_index + 1, col_index - 1] unless bottem_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
+    unless bottem_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index + 1, col_index - 1]
+    end
     # one row down, same col
-    surrounding_cells << [row_index + 1, col_index] unless bottem_edge_of_pattern?(row_index)
+    unless bottem_edge_of_pattern?(row_index)
+      surrounding_cells << [row_index + 1, col_index]
+    end
     # one row down, one col right
-    surrounding_cells << [row_index + 1, col_index + 1] unless bottem_edge_of_pattern?(row_index) ||  right_edge_of_pattern?(col_index)
-
+    unless bottem_edge_of_pattern?(row_index) ||  right_edge_of_pattern?(col_index)
+      surrounding_cells << [row_index + 1, col_index + 1]
+    end
 
     surrounding_cells
   end
@@ -239,10 +257,12 @@ end
 # )
 # @conways_game_star.run
 
-# @conways_game_random = CommandLineConways.new(
-#   pattern_row_length: 150,
-#   pattern_col_length: 150,
-#   dead_cell_graphic: ' ',
-#   alive_cell_graphic: '𓆦',
-# )
-# @conways_game_random.run
+@conways_game_random = CommandLineConways.new(
+  pattern_row_length: 150,
+  pattern_col_length: 150,
+  dead_cell_graphic: ' ',
+  alive_cell_graphic: '𓆦',
+)
+@conways_game_random.run
+
+
