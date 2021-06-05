@@ -199,4 +199,24 @@ class TestCommandLineConways < Test::Unit::TestCase
     @conways_game_toad.send(:tick)
     assert_equal(toad_ticked_twice, @conways_game_toad.pattern)
   end
+
+  def test_left_edge_of_pattern?
+   assert_equal(true, @conways_game_toad.send(:left_edge_of_pattern?,0))
+   assert_equal(false, @conways_game_toad.send(:left_edge_of_pattern?,1))
+  end
+
+  def test_top_edge_of_pattern?
+   assert_equal(true, @conways_game_toad.send(:top_edge_of_pattern?,0))
+   assert_equal(false, @conways_game_toad.send(:top_edge_of_pattern?,1))
+  end
+
+  def test_right_edge_of_pattern?
+   assert_equal(true, @conways_game_toad.send(:right_edge_of_pattern?,5))
+   assert_equal(false, @conways_game_toad.send(:right_edge_of_pattern?,3))
+  end
+
+  def test_bottem_edge_of_pattern?
+   assert_equal(true, @conways_game_toad.send(:bottem_edge_of_pattern?,5))
+   assert_equal(false, @conways_game_toad.send(:bottem_edge_of_pattern?,3))
+  end
 end

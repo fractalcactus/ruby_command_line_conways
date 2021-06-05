@@ -1,5 +1,5 @@
-# frozen_string_literal: true
 
+require 'pry-nav'
 # frozen_string_literal: true
 
 # A program to play Conway's Game of Life in the command line
@@ -84,12 +84,12 @@ class CommandLineConways
     @dead_cell_graphic
   end
 
+  # for each coordinate in coordinates_of_surrounding_cells,
+  # increment neighbors if pattern contains a @alive_cell_graphic at that coordinate
+  # the coordinates are in the form [row,col]
   def count_neighbours(row_index, col_index)
     neighbors = 0
     coordinates_of_surrounding_cells = get_coordinates_of_surrounding_cells(row_index, col_index)
-    # for each coordinate in coordinates_of_surrounding_cells,
-    # increment neighbors if pattern contains a @alive_cell_graphic at that coordinate
-    # the coordinates are in the form [row,col]
     coordinates_of_surrounding_cells.each do |coord|
       surrounding_cell_row = coord[0]
       surrounding_cell_col = coord[1]
@@ -98,40 +98,47 @@ class CommandLineConways
     neighbors
   end
 
+  # get the coordinates of cells that are horizontally, vertically, or diagonally adjacent
+  # to the parameters row, col
+  # don't check out of bound (row, col) indices
   def get_coordinates_of_surrounding_cells(row_index, col_index)
     surrounding_cells = []
-    # get the coordinates of cells that are horizontally, vertically, or diagonally adjacent
-    # to the parameters row, col
-    # this will include invalid negative indices
 
     # one row up, one col left
-    surrounding_cells << [row_index - 1, col_index - 1] unless (row_index == 0) || (col_index == 0)
+    surrounding_cells << [row_index - 1, col_index - 1] unless top_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
     # one row up, same col
-    surrounding_cells << [row_index - 1, col_index] unless row_index == 0
+    surrounding_cells << [row_index - 1, col_index] unless top_edge_of_pattern?(row_index)
     # one row up, one col right
-    surrounding_cells << [row_index - 1, col_index + 1] unless (row_index == 0) || (col_index == @pattern_col_length_zero_indexed)
+    surrounding_cells << [row_index - 1, col_index + 1] unless top_edge_of_pattern?(row_index) || right_edge_of_pattern?(col_index)
     # same row, one col left
-    surrounding_cells << [row_index, col_index - 1] unless col_index == 0
+    surrounding_cells << [row_index, col_index - 1] unless left_edge_of_pattern?(col_index)
     # same row, one col right
-    surrounding_cells << [row_index, col_index + 1] unless col_index == @pattern_col_length_zero_indexed
+    surrounding_cells << [row_index, col_index + 1] unless right_edge_of_pattern?(col_index)
     # one row down, one col left
-    surrounding_cells << [row_index + 1, col_index - 1] unless (row_index == @pattern_row_length_zero_indexed) || (col_index == 0)
+    surrounding_cells << [row_index + 1, col_index - 1] unless bottem_edge_of_pattern?(row_index) || left_edge_of_pattern?(col_index)
     # one row down, same col
-    surrounding_cells << [row_index + 1, col_index] unless row_index == @pattern_row_length_zero_indexed
+    surrounding_cells << [row_index + 1, col_index] unless bottem_edge_of_pattern?(row_index)
     # one row down, one col right
-    surrounding_cells << [row_index + 1, col_index + 1] unless (row_index == @pattern_row_length_zero_indexed) || (col_index == @pattern_col_length_zero_indexed)
+    surrounding_cells << [row_index + 1, col_index + 1] unless bottem_edge_of_pattern?(row_index) ||  right_edge_of_pattern?(col_index)
 
-    # # remove invalid negative indices
-    # surrounding_cells.reject! do |cell|
-    #   cell.any?(&:negative?)
-    # end
-
-    # # remove coordinates outside the bounds of the pattern
-    # surrounding_cells.reject! do |cell|
-    #   cell[0] >= @pattern_row_length_zero_indexed  || cell[1] >= @pattern_col_length_zero_indexed
-    # end
 
     surrounding_cells
+  end
+
+  def left_edge_of_pattern?(col_index)
+    col_index == 0
+  end
+
+  def top_edge_of_pattern?(row_index)
+    row_index ==  0
+  end
+
+  def right_edge_of_pattern?(col_index)
+    col_index == @pattern_col_length_zero_indexed
+  end
+
+  def bottem_edge_of_pattern?(row_index)
+    row_index ==  @pattern_row_length_zero_indexed
   end
 
   def randomize_seed
