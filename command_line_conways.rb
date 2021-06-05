@@ -19,7 +19,9 @@ class CommandLineConways
     pattern: :random
   )
     @pattern_row_length = pattern_row_length
+    @pattern_row_length_zero_indexed = pattern_row_length - 1
     @pattern_col_length = pattern_col_length
+    @pattern_col_length_zero_indexed = pattern_col_length - 1
     @dead_cell_graphic = dead_cell_graphic
     @alive_cell_graphic = alive_cell_graphic
     @pattern = case pattern
@@ -101,25 +103,33 @@ class CommandLineConways
     # get the coordinates of cells that are horizontally, vertically, or diagonally adjacent
     # to the parameters row, col
     # this will include invalid negative indices
-    # TODO: optimise this to not bother checking out of bound indices
-    surrounding_cells << [row_index - 1, col_index - 1]
-    surrounding_cells << [row_index - 1, col_index]
-    surrounding_cells << [row_index - 1, col_index + 1]
-    surrounding_cells << [row_index, col_index - 1]
-    surrounding_cells << [row_index, col_index + 1]
-    surrounding_cells << [row_index + 1, col_index - 1]
-    surrounding_cells << [row_index + 1, col_index]
-    surrounding_cells << [row_index + 1, col_index + 1]
 
-    # remove invalid negative indices
-    surrounding_cells.reject! do |cell|
-      cell.any?(&:negative?)
-    end
+    # one row up, one col left
+    surrounding_cells << [row_index - 1, col_index - 1] unless (row_index == 0) || (col_index == 0)
+    # one row up, same col
+    surrounding_cells << [row_index - 1, col_index] unless row_index == 0
+    # one row up, one col right
+    surrounding_cells << [row_index - 1, col_index + 1] unless (row_index == 0) || (col_index == @pattern_col_length_zero_indexed)
+    # same row, one col left
+    surrounding_cells << [row_index, col_index - 1] unless col_index == 0
+    # same row, one col right
+    surrounding_cells << [row_index, col_index + 1] unless col_index == @pattern_col_length_zero_indexed
+    # one row down, one col left
+    surrounding_cells << [row_index + 1, col_index - 1] unless (row_index == @pattern_row_length_zero_indexed) || (col_index == 0)
+    # one row down, same col
+    surrounding_cells << [row_index + 1, col_index] unless row_index == @pattern_row_length_zero_indexed
+    # one row down, one col right
+    surrounding_cells << [row_index + 1, col_index + 1] unless (row_index == @pattern_row_length_zero_indexed) || (col_index == @pattern_col_length_zero_indexed)
 
-    # remove coordinates outside the bounds of the pattern
-    surrounding_cells.reject! do |cell|
-      cell[0] >= (@pattern_row_length - 1) || cell[1] >= (@pattern_col_length - 1)
-    end
+    # # remove invalid negative indices
+    # surrounding_cells.reject! do |cell|
+    #   cell.any?(&:negative?)
+    # end
+
+    # # remove coordinates outside the bounds of the pattern
+    # surrounding_cells.reject! do |cell|
+    #   cell[0] >= @pattern_row_length_zero_indexed  || cell[1] >= @pattern_col_length_zero_indexed
+    # end
 
     surrounding_cells
   end
@@ -222,10 +232,10 @@ end
 # )
 # @conways_game_star.run
 
-@conways_game_random = CommandLineConways.new(
-  pattern_row_length: 150,
-  pattern_col_length: 150,
-  dead_cell_graphic: ' ',
-  alive_cell_graphic: '𓆦',
-)
-@conways_game_random.run
+# @conways_game_random = CommandLineConways.new(
+#   pattern_row_length: 150,
+#   pattern_col_length: 150,
+#   dead_cell_graphic: ' ',
+#   alive_cell_graphic: '𓆦',
+# )
+# @conways_game_random.run
