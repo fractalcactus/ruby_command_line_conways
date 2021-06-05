@@ -16,5 +16,8 @@ You can run the preloaded seeds 'blinker', 'toad' and 'star' by uncommenting the
 
 ## Screen Recordings
 Random seed
-![2021-06-04 17 35 06](https://user-images.githubusercontent.com/8527715/120750954-5002f900-c55b-11eb-9a46-415a09264362.gif)
+
+
+![2021-06-06 11 39 51](https://user-images.githubusercontent.com/8527715/120908195-02ea6880-c6bc-11eb-8aad-982df3f44992.gif)
+
 
